@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>com.googleusercontent.apps.256502347694-3punirpdeu1epdvfnospufdbh3drsh0m</string>
+			</array>
+		</dict>
+	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Urbanist-VariableFont_wght.ttf</string>
+		<string>Urbanist-Italic-VariableFont_wght.ttf</string>
+	</array>
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>fetch</string>
+		<string>remote-notification</string>
+	</array>
+    <key>NSCameraUsageDescription</key>
+    <string>We require access to the camera to enable you to upload and set profile pictures, as well as to capture and submit images of your license for verification purposes.</string>
+
+</dict>
+</plist>
