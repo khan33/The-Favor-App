@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import PartialSheet
 
 struct SignupView1: View {
     @State var isUpdate: Bool = false
@@ -15,7 +16,13 @@ struct SignupView1: View {
     @State var calendarId: UUID = UUID()
     @StateObject var viewModel: AthenticationViewModel = AthenticationViewModel()
     @StateObject private var locationManager = LocationManager()
-
+    let iPhoneStyle = PSIphoneStyle(
+        background: .solid(Color(UIColor.systemBackground)),
+        handleBarStyle: .solid(Color.secondary),
+        cover: .enabled(Color(red: 0.04, green: 0.06, blue: 0.11).opacity(0.69)),
+        cornerRadius: 12
+    )
+    @State var isDatePickerVisible = false
     @State var show: Bool = false
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
@@ -38,11 +45,10 @@ struct SignupView1: View {
                 }
                 
                 
-                FavorTextField(placeholder: "MM/DD/YYYY", leftImage: nil, rightImage: "calander", text: $viewModel.dateOfBirth) {
-                    withAnimation {
-                        show.toggle()
+                FavorTextField(placeholder: "MM/DD/YYYY", leftImage: nil, rightImage: "calander", text: $viewModel.dateOfBirth)
+                    .onTapGesture {
+                        isDatePickerVisible.toggle()
                     }
-                }
                 
                 
                 FavorTextField(placeholder: "Phone Number", leftImage: nil, rightImage: nil, text: $viewModel.phoneNumber)
@@ -67,6 +73,12 @@ struct SignupView1: View {
                 Spacer()
             }
         }
+        .sheet(isPresented: $isDatePickerVisible, content: {
+            DateTimePickerView(selectedDate: $viewModel.selectedPickDate, isPresented: $isDatePickerVisible)
+                .presentationDetents([.medium])
+        })
+        
+
         .padding()
         .navigationBarHidden(true)
         .navigationTitle("")
@@ -90,21 +102,6 @@ struct SignupView1: View {
                     viewModel.showMessage = false
                 }
         )
-        
-        
-//        .toolBarPopover(show: $show) {
-//            DatePicker("", selection: .constant(Date()), displayedComponents: [.date])
-//                .datePickerStyle(.graphical)
-//                .labelsHidden()
-//                .id(calendarId)
-//                .onChange(of: dateOfBirth) { _ in
-//                    calendarId = UUID()
-//                }
-//                .onTapGesture {
-//                    show.toggle()
-//
-//                }
-//        }
     }
     
     
@@ -116,8 +113,55 @@ struct SignupView1: View {
    
 }
 
-struct SignupView1_Previews: PreviewProvider {
-    static var previews: some View {
-        SignupView1()
+struct DateTimePickerView: View {
+    @Binding var selectedDate: Date
+    @Binding var isPresented: Bool
+    @State private var pickerDate: Date = Date()
+
+    var minimumDate: PartialRangeThrough<Date> {
+        let maxDate = Calendar.current.date(byAdding: .year, value: -18, to: Date())!
+        return ...maxDate
     }
+
+    var body: some View {
+        VStack {
+            VStack {
+                DatePicker("Select Birth Date ", selection: $pickerDate, in: minimumDate , displayedComponents: [.date])
+                    .transformEffect(.init(scaleX: 1, y: 1))
+                    .datePickerStyle(GraphicalDatePickerStyle())
+                    .padding(16)
+                    .background(Color.appLightGrey.opacity(0.4))
+                    .cornerRadius(20)
+                    .accentColor(Color.appPrimaryColor)
+            }.padding(.top, 20)
+            Divider()
+                .padding(.vertical, 8)
+
+            
+            HStack(alignment: .center) {
+                Button(action: {
+                    isPresented = false
+                    selectedDate = pickerDate
+                }, label: {
+                    Text("OK")
+                        .foregroundColor(Color.black)
+                        .background(
+                            Color.black
+                                .frame(height: 1)
+                                .offset(y: 10)
+                        )
+                })
+            }
+
+        }
+        .onAppear(perform: onAppear)
+        .background(Color.appWhite)
+        .padding(20)
+        
+    }
+
+    private func onAppear() {
+        self.pickerDate = minimumDate.upperBound
+    }
+
 }

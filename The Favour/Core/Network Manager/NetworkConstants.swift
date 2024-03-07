@@ -63,9 +63,11 @@ struct NetworkConstants {
     static let saveCustomFavor = "custom_favors/store"
     static let udpateCustomFavor = "custom_favors/update"
     static let deleteCustomFavor = "custom_favors/delete"
+    static let customFavorBooking = "custom_favors/bookings/offer"
+    static let customFavors = "custom_favors"
+    static let customFavorsDetails = "custom_favors/details"
     
     // Accept Custom Favor
-    
     static let acceptCustomFavorByUser = "custom_favors/bookings/offer"
     static let payemnt_update = "favors/bookings/payment_update"
 

@@ -97,6 +97,7 @@
 		E875323B2A13B4B5007E3089 /* BottomButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E875323A2A13B4B5007E3089 /* BottomButtonView.swift */; };
 		E875323E2A13B76C007E3089 /* MyRequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E875323D2A13B76C007E3089 /* MyRequestView.swift */; };
 		E87532422A13B7F1007E3089 /* RequestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E87532412A13B7F1007E3089 /* RequestView.swift */; };
+		E89D463E2B99F133006B35FF /* PartialSheet in Frameworks */ = {isa = PBXBuildFile; productRef = E89D463D2B99F133006B35FF /* PartialSheet */; };
 		E8A2B0992A050A2600D7F524 /* ServicesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A2B0982A050A2600D7F524 /* ServicesView.swift */; };
 		E8A2B09B2A05168400D7F524 /* SeeAllView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A2B09A2A05168400D7F524 /* SeeAllView.swift */; };
 		E8A2B0A12A05191600D7F524 /* FavorListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E8A2B0A02A05191600D7F524 /* FavorListView.swift */; };
@@ -319,6 +320,7 @@
 			files = (
 				E83131C72A4A048B005D80C0 /* FirebaseAnalytics in Frameworks */,
 				E862CF922B62663600783F6F /* StripeApplePay in Frameworks */,
+				E89D463E2B99F133006B35FF /* PartialSheet in Frameworks */,
 				E862CF982B62663600783F6F /* StripeIdentity in Frameworks */,
 				E8A5E18729F966CC0077E2F0 /* DPOTPView in Frameworks */,
 				E862CF9A2B62663600783F6F /* StripePaymentSheet in Frameworks */,
@@ -981,6 +983,7 @@
 				E862CF992B62663600783F6F /* StripePaymentSheet */,
 				E862CF9B2B62663600783F6F /* StripePayments */,
 				E862CF9D2B62663600783F6F /* StripePaymentsUI */,
+				E89D463D2B99F133006B35FF /* PartialSheet */,
 			);
 			productName = "The Favour";
 			productReference = E809304B29DDC21C003BFEFE /* The Favour.app */;
@@ -1020,6 +1023,7 @@
 				E83131C52A4A048B005D80C0 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				E8A89E672A61251A006DF4AE /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				E862CF8E2B62663600783F6F /* XCRemoteSwiftPackageReference "stripe-ios-spm" */,
+				E89D463C2B99F133006B35FF /* XCRemoteSwiftPackageReference "PartialSheet" */,
 			);
 			productRefGroup = E809304C29DDC21C003BFEFE /* Products */;
 			projectDirPath = "";
@@ -1495,6 +1499,14 @@
 				minimumVersion = 23.21.1;
 			};
 		};
+		E89D463C2B99F133006B35FF /* XCRemoteSwiftPackageReference "PartialSheet" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AndreaMiotto/PartialSheet";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.1.1;
+			};
+		};
 		E8A2B0A62A056C4500D7F524 /* XCRemoteSwiftPackageReference "SwiftUI-Tooltip" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/quassummanus/SwiftUI-Tooltip.git";
@@ -1609,6 +1621,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = E862CF8E2B62663600783F6F /* XCRemoteSwiftPackageReference "stripe-ios-spm" */;
 			productName = StripePaymentsUI;
+		};
+		E89D463D2B99F133006B35FF /* PartialSheet */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = E89D463C2B99F133006B35FF /* XCRemoteSwiftPackageReference "PartialSheet" */;
+			productName = PartialSheet;
 		};
 		E8A2B0A72A056C4500D7F524 /* SwiftUITooltip */ = {
 			isa = XCSwiftPackageProductDependency;

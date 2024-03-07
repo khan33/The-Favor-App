@@ -6,6 +6,8 @@
 //
 
 import SwiftUI
+import PartialSheet
+
 
 @main
 struct The_FavourApp: App {
@@ -19,19 +21,21 @@ struct The_FavourApp: App {
                 if KeychainManager.getAuthToken() != nil{
                     MainTabView()
                         .environmentObject(userViewModel)
+                        .attachPartialSheetToRoot()
                 } else {
                     NavigationView {
                         SignupView()
                             .environmentObject(userViewModel)
-
+                            .attachPartialSheetToRoot()
                     }
                 }
             } else {
                 SplashScreenView()
                     .environmentObject(userViewModel)
-
+                    .attachPartialSheetToRoot()
             }
         }
+        
 
     }
 }

@@ -16,26 +16,26 @@ struct NeedFavorView: View {
 
     var body: some View {
         VStack(spacing: 16) {
-            topBarView
             if let result = viewModel.bookingFavor {
+                topBarView
                 if result.isEmpty {
                     Spacer()
                     FavorText(text: "No Favor found!", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
                     Spacer()
                 } else {
                     ScrollView(.vertical, showsIndicators: false) {
-                        
                         ForEach(result.indices, id: \.self) { index in
                             NeedFavorCellView(bookingFavor: result[index]) {
                                 viewModel.booking_data = result[index]
                                 bookingDetail.toggle()
                             }
+                            .padding(.vertical)
                         }
                     }
                 }
             }
         }
-        .padding(24)
+        .padding()
         .navigationBarHidden(true)
         .navigationTitle("")
         .background( Color(#colorLiteral(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)))
@@ -60,18 +60,12 @@ extension NeedFavorView {
                     .scaledToFit()
                     .frame(width: 24, height: 24)
             }
-            FavorText(text: "Favor Requester", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
+            FavorText(text: "Favor Requester", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 22, alignment: .leading, lineSpace: 0)
             Spacer()
             FavorButton(text: "My Requests", width: 110, height: 30) {
                 isNext = true
             }
 
         }
-    }
-}
-
-struct NeedFavorView_Previews: PreviewProvider {
-    static var previews: some View {
-        NeedFavorView()
     }
 }

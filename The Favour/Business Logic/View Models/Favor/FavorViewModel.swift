@@ -16,8 +16,8 @@ import CoreLocation
 
 
 final class FavorViewModel: ObservableObject {
-    private let favorManager: FavorManager = FavorManager()
-    private var cancellables = Set<AnyCancellable>()
+    let favorManager: FavorManager = FavorManager()
+    var cancellables = Set<AnyCancellable>()
     
     @Published var shouldShowLoader: Bool = false
     @Published var favors: [FavorList]? {
@@ -25,6 +25,9 @@ final class FavorViewModel: ObservableObject {
             updateCoordinatesArray()
         }
     }
+    
+    @Published var customFavor: [FavorList]?
+    
     @Published var favorsByService: [FavorList]?
 
     @Published var popularServicFavors: [FavorList]?
@@ -64,8 +67,8 @@ final class FavorViewModel: ObservableObject {
     @Published var is_services: String = "true"
     
     @Published var locations : [CLLocationCoordinate2D] = []
-    
     var locationManager: LocationManager = LocationManager()
+    @Published var isCustomFavor: Bool = false
 
     init() {
         isFavorPostValidPublisher
@@ -97,8 +100,6 @@ final class FavorViewModel: ObservableObject {
         } else {
             tagsError = ""
         }
-        
-        
         if desc.isEmpty {
             descError = "Description is required"
             isValid = false
@@ -125,7 +126,6 @@ final class FavorViewModel: ObservableObject {
 
     }
     
-    
     func getUserFavor() {
         shouldShowLoader = true
         favorManager.userFavors()
@@ -149,7 +149,6 @@ final class FavorViewModel: ObservableObject {
     
     func getFavor() {
         shouldShowLoader = true
-        
         let param = FavorRequest(keyword: search_keyword, category_id: category_id, radius: radius, lat: String(locationManager.latitude), lng: String(locationManager.longitude), services_page_size: services_page_size, page: page, page_size: page_size, is_services: is_services)
         favorManager.getFavor(params: param)
             .sink { [weak self] completion in
@@ -185,49 +184,6 @@ final class FavorViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
-    
-    func filterFavorbyService(service_id : Int) {
-        if service_id != 0 {
-            self.popularServicFavors = self.favors?.filter { $0.category_id ?? 0 == service_id }
-            return
-        }
-        self.popularServicFavors = self.favors
-        
-    }
-    
-    
-    
-    
-    func getService() {
-        shouldShowLoader = true
-        
-        favorManager.getService()
-            .sink { [weak self] completion in
-                switch completion {
-                case let .failure(error):
-                    self?.shouldShowLoader = false
-                    print("Couldn't login: \(error)")
-                case .finished:
-                    self?.shouldShowLoader = false
-                    break
-                }
-            } receiveValue: { [weak self] model in
-                if model.error == false {
-                    
-                    
-                    if let services = model.data {
-                        self?.services = services
-                        for item in services {
-                            if let name = item.name {
-                                self?.serviceName.append(name)
-                            }
-                        }
-                    }
-                }
-            }
-            .store(in: &cancellables)
-    }
-    
     func postFavor(_ image: UIImage?) {
         shouldShowLoader = true
         let category_id = self.selectedService?.id ?? 0
@@ -252,7 +208,42 @@ final class FavorViewModel: ObservableObject {
             }
             .store(in: &cancellables)
     }
+
+    func filterFavorbyService(service_id : Int) {
+        if service_id != 0 {
+            self.popularServicFavors = self.favors?.filter { $0.category_id ?? 0 == service_id }
+            return
+        }
+        self.popularServicFavors = self.favors
+        
+    }
     
+    func getService() {
+        shouldShowLoader = true
+        favorManager.getService()
+            .sink { [weak self] completion in
+                switch completion {
+                case let .failure(error):
+                    self?.shouldShowLoader = false
+                    print("Couldn't login: \(error)")
+                case .finished:
+                    self?.shouldShowLoader = false
+                    break
+                }
+            } receiveValue: { [weak self] model in
+                if model.error == false {
+                    if let services = model.data {
+                        self?.services = services
+                        for item in services {
+                            if let name = item.name {
+                                self?.serviceName.append(name)
+                            }
+                        }
+                    }
+                }
+            }
+            .store(in: &cancellables)
+    }
     func deleteFavor(id: Int) {
         shouldShowLoader = true
         favorManager.favorDelete(favor_id: id)
@@ -278,7 +269,6 @@ final class FavorViewModel: ObservableObject {
 }
 
 extension FavorViewModel {
-    
     var isServiceValidPublisher: AnyPublisher<Bool, Never> {
         $selectedService
             .map { service in
@@ -336,3 +326,5 @@ extension FavorViewModel {
       }
 
 }
+
+

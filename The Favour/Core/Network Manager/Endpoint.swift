@@ -81,6 +81,9 @@ extension Endpoint {
         return Endpoint(path: NetworkConstants.favorPost)
     }
     
+    
+    
+    
     static var userDeleteFavor: Self {
         return Endpoint(path: NetworkConstants.deleteFavor)
     }
@@ -103,11 +106,27 @@ extension Endpoint {
         ])
     }
     
+    static func getCustomFavor(page: String = "1", page_size: String = "100" ) -> Self {
+        return Endpoint(path: NetworkConstants.customFavorListing, queryItems: [
+            URLQueryItem(name: "page", value: page),
+            URLQueryItem(name: "page_size", value: page_size),
+        ])
+    }
+    static var customPostFavor: Self {
+        return Endpoint(path: NetworkConstants.saveCustomFavor)
+    }
+    static var deleteCustomFavor: Self {
+        return Endpoint(path: NetworkConstants.deleteCustomFavor)
+    }
+    
+    static var udpateCustomFavor: Self {
+        return Endpoint(path: NetworkConstants.udpateCustomFavor)
+    }
+    
     
     static func getFavorById(Id: String) -> Self {
         return Endpoint(path: NetworkConstants.getFavorDetailById, queryItems: [URLQueryItem(name: "id", value: Id)])
     }
-    
     
     static var getService: Self {
         return Endpoint(path: NetworkConstants.getServices, queryItems: [
@@ -115,9 +134,6 @@ extension Endpoint {
             URLQueryItem(name: "page_size", value: "50"),
         ])
     }
-    
-    
-    
 
     static var getUserFavorbookingList: Self {
         return Endpoint(path: NetworkConstants.favorBookingByUser)
@@ -171,4 +187,18 @@ extension Endpoint {
         return Endpoint(path: NetworkConstants.payemnt_update)
     }
     
+    static var customFavorBookingOffer: Self {
+        return Endpoint(path: NetworkConstants.customFavorBooking)
+    }
+    
+    
+    static var customFavors: Self {
+        return Endpoint(path: NetworkConstants.customFavors)
+    }
+    
+    static func customFavorsDetails(id: String) -> Self {
+        return Endpoint(path: NetworkConstants.customFavorsDetails, queryItems: [
+            URLQueryItem(name: "favor_id", value: id)
+        ])
+    }
 }

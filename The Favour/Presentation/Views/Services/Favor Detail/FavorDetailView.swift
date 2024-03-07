@@ -15,9 +15,11 @@ struct FavorDetailView: View {
     @Binding var isPresented: Bool
     var favor_detail: FavorList?
     @State var isBooking: Bool
+    var isPage: String = ""
     @State var isRequestScreen: Bool = false
     @State private var selectedIndex: Int = 0
     @State var isChatview: Bool = false
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
         NavigationView {
@@ -29,8 +31,21 @@ struct FavorDetailView: View {
 
                 
                 VStack(spacing: 16) {
-                    NavigationBarView(text: "Detail") {
-                        self.isPresented.toggle()
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            if isPage == "Home" {
+                                self.isPresented.toggle()
+                            } else {
+                                self.presentationMode.wrappedValue.dismiss()
+                            }
+                        }) {
+                            Image("ic_back")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 24, height: 24)
+                        }
+                        FavorText(text: "Detail", textColor: Color(#colorLiteral(red: 0.13, green: 0.13, blue: 0.13, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
+                        Spacer()
                     }
                     
                     ScrollView (showsIndicators: false) {

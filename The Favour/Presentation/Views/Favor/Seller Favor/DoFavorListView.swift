@@ -15,14 +15,13 @@ struct DoFavorListView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
 
     var body: some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 16) {
             NavigationLink(destination: PostFavorView(viewModel: viewModel), isActive: $addPost) { EmptyView() }
             topBarView
             if viewModel.favors?.count == 0 {
                 Spacer()
                 FavorText(text: "No Favor found!", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
                 Spacer()
-
             } else {
                 ScrollView(.vertical, showsIndicators: false) {
                     if let favor = viewModel.favors {
@@ -32,12 +31,13 @@ struct DoFavorListView: View {
                                     viewModel.favor_detail = favor[index]
                                     favorDetail = true
                                 }
+                                .padding(.vertical)
                         }
                     }
                 }
             }
         }
-        .padding(24)
+        .padding()
         .navigationBarHidden(true)
         .navigationTitle("")
         .background( Color(#colorLiteral(red: 0.98, green: 0.98, blue: 0.98, alpha: 1)))
@@ -54,20 +54,13 @@ struct DoFavorListView: View {
             }
 
         }
-
-        
-        
-
         .onAppear {
             viewModel.getUserFavor()
         }
         .spinner(isShowing: $viewModel.shouldShowLoader)
-
-
     }
-    
-    
-    
+}
+extension DoFavorListView {
     @ViewBuilder private var topBarView: some View {
         HStack(spacing: 12) {
             Button(action: {
@@ -78,12 +71,8 @@ struct DoFavorListView: View {
                     .scaledToFit()
                     .frame(width: 24, height: 24)
             }
-//            Image("heart_logo")
-//                .resizable()
-//                .scaledToFit()
-//                .frame(width: 32, height: 32)
+            FavorText(text: "Favor Provider", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 22, alignment: .leading, lineSpace: 0)
             
-            FavorText(text: "I can do you a favor", textColor: Color(#colorLiteral(red: 0.2, green: 0.2, blue: 0.2, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
             Spacer()
             Image("add")
                 .resizable()
@@ -93,12 +82,5 @@ struct DoFavorListView: View {
                     addPost = true
                 }
         }
-    }
-    
-}
-
-struct DoFavorListView_Previews: PreviewProvider {
-    static var previews: some View {
-        DoFavorListView()
     }
 }

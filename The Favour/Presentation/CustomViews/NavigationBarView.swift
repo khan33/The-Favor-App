@@ -18,7 +18,6 @@ struct NavigationBarView: View {
         HStack(spacing: 12) {
             Button(action: {
                 self.presentationMode.wrappedValue.dismiss()
-                action?()
             }) {
                 Image(icon)
                     .resizable()
@@ -28,11 +27,5 @@ struct NavigationBarView: View {
             FavorText(text: text, textColor: Color(#colorLiteral(red: 0.13, green: 0.13, blue: 0.13, alpha: 1)), fontType: .bold, fontSize: 24, alignment: .leading, lineSpace: 0)
             Spacer()
         }
-    }
-}
-
-struct NavigationBarView_Previews: PreviewProvider {
-    static var previews: some View {
-        NavigationBarView(text: "Security", icon: "ic_back")
     }
 }

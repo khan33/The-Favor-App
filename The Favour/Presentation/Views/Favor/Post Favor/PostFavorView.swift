@@ -15,7 +15,7 @@ struct PostFavorView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 6) {
             NavigationBarView(text: viewModel.screenTitle)
-                .padding(.bottom, 24)
+                .padding()
             
             ScrollView {
                 VStack (spacing: 10) {
@@ -25,11 +25,13 @@ struct PostFavorView: View {
                     FavorTextField(placeholder: "Pick Location", leftImage: nil, rightImage: "location", text: $viewModel.address) {
                         pickLocation = true
                     }
-                    //image_uploading_view
                     
                     FavorButton(text: "Post", width: .infinity, height: 60, bgColor: .appPrimaryColor) {
-                        viewModel.postFavor(nil)
-//                        presentationMode.wrappedValue.dismiss()
+                        if viewModel.isCustomFavor {
+                            viewModel.postCustomFavor()
+                        } else {
+                            viewModel.postFavor(nil)
+                        }
                     }
                     .padding(.top, 12)
                     .opacity(viewModel.isValidPost ? 1 : 0.5)
@@ -37,8 +39,9 @@ struct PostFavorView: View {
 
                 }
             }
+            .padding(24)
+
         }
-        .padding(24)
         .navigationBarHidden(true)
         .navigationTitle("")
         .spinner(isShowing: $viewModel.shouldShowLoader)

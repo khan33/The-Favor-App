@@ -59,8 +59,6 @@ struct DoFavorView: View {
 
     func editItem(_ item: FavorList?) {
         guard let item = item else { return }
-        
-        
         viewModel.address = item.address ?? ""
         viewModel.title = item.title ?? ""
         viewModel.desc = item.meta_details?.description ?? ""
@@ -75,13 +73,7 @@ struct DoFavorView: View {
             }
         }
         viewModel.favor_id = String(item.id ?? 0)
-        
-        
-        
         addPost = true
-        
-        
-        
     }
     
     

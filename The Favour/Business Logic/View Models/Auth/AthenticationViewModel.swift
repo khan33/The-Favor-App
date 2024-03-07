@@ -41,7 +41,12 @@ class AthenticationViewModel: ObservableObject {
     @Published var new_register: Bool = false
     @Published var isUpdate: Bool = false
 
-    
+    @Published var selectedPickDate = Date() {
+        didSet {
+            updatePickDatetime()
+        }
+    }
+
     
     @Published private(set) var isEmailValid: Bool = false
     @Published private(set) var isResetPasswordFormValid: Bool = false
@@ -82,6 +87,12 @@ class AthenticationViewModel: ObservableObject {
 
         
       }
+    
+    private func updatePickDatetime() {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        dateOfBirth = dateFormatter.string(from: selectedPickDate)
+    }
     
     func showToast(with message: String, showToas: Bool) {
         errorMessage = message

@@ -54,6 +54,17 @@ struct MainTabView: View {
                 .id(favor)
                 .tag(1)
             
+            
+            
+            MyCustomFavorListView()
+                
+                .tabItem {
+                    CustomTabItemView(imageName: "calendar.badge.plus", title: "Request", isSelected: selection == 1)
+                    
+                }
+                .id(favor)
+                .tag(2)
+            
             SearchMapView()
                 
                 .tabItem {
@@ -61,7 +72,7 @@ struct MainTabView: View {
                     
                 }
                 .id(favor)
-                .tag(2)
+                .tag(3)
             
             
             ProfileView()
@@ -74,7 +85,7 @@ struct MainTabView: View {
                     CustomTabItemView(imageName: "person", title: "Profile", isSelected: selection == 1)
                 }
                 .id(dashboard)
-                .tag(3)
+                .tag(4)
         }
         .accentColor(.appTitleColor)
         .navigationBarTitle("")

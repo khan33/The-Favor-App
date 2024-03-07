@@ -13,38 +13,68 @@ protocol FavorManagerProtocol: AnyObject {
     func userFavors() -> AnyPublisher<FavorModel, Error>
     func favorPost(favor: Favor, media: [Media]? ) -> AnyPublisher<FavorModel, Error>
     func favorDelete(favor_id: Int) -> AnyPublisher<FavorModel, Error>
-
-    
     func favorUpdate(favor: Favor ) -> AnyPublisher<LoginModel, Error>
     func getFavor(params: FavorRequest) -> AnyPublisher<FavorModel, Error>
     func getFavorById(id: String) -> AnyPublisher<LoginModel, Error>
     func getService() -> AnyPublisher<ServiceModel, Error>
+    
+    func customfavorPost(favor: Favor) -> AnyPublisher<FavorModel, Error>
+    func getCustomFavor(params: FavorRequest) -> AnyPublisher<FavorModel, Error>
+    func deleteCustomFavor(favor_id: Int) -> AnyPublisher<FavorModel, Error>
 
+    func bookingCustomFavor(favor_id: Int, total_price: String, details: String) -> AnyPublisher<FavorModel, Error>
+    func getCustomSellerFavor() -> AnyPublisher<FavorModel, Error>
+    func getCustomSellerFavorDetail(id: String) -> AnyPublisher<FavorModel, Error>
+
+    
+    
 }
 
 final class FavorManager: FavorManagerProtocol {
-    
     let networkManager: NetworkManagerProtocol
-        
     init() {
         networkManager = NetworkManager()
     }
-    
     func userFavors() -> AnyPublisher<FavorModel, Error> {
         let endPoint = Endpoint.getUserFavor
         return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
     }
-    
-    
     func favorDelete(favor_id: Int) -> AnyPublisher<FavorModel, Error> {
         let endPoint = Endpoint.userDeleteFavor
         let params = [ "favor_id": favor_id]
         return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
     }
+    
+    func customfavorPost(favor: Favor) -> AnyPublisher<FavorModel, Error> {
+        var endPoint = Endpoint.customPostFavor
+        if favor.favor_id != "0" {
+            endPoint = Endpoint.userUpdateFavor
+        }
 
+        let params = [
+            "title": favor.title,
+            "tags": favor.tags,
+            "category_id": favor.category_id,
+            "status": favor.status,
+            "description": favor.description,
+            "lat": favor.lat,
+            "lng": favor.lng,
+            "address" : favor.address,
+            "favor_id": favor.favor_id
+        ]
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
+    }
+    
+    func deleteCustomFavor(favor_id: Int) -> AnyPublisher<FavorModel, Error> {
+        let endPoint = Endpoint.deleteCustomFavor
+        let params = [ "favor_id": favor_id]
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
+    }
+
+    
+    
     func favorPost(favor: Favor, media: [Media]?) -> AnyPublisher<FavorModel, Error> {
         var endPoint = Endpoint.userPostFavor
-
         if favor.favor_id != "0" {
             endPoint = Endpoint.userUpdateFavor
         }
@@ -63,13 +93,8 @@ final class FavorManager: FavorManagerProtocol {
             "search_tags": favor.search_tags,
             "favor_id": favor.favor_id
         ]
-        
         return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
-        
-        
-//        return networkManager.mutlipartResuest(type: FavorModel.self, url: endPoint.url, headers: endPoint.headers, parameters: params, media: media)
     }
-
     func favorUpdate(favor: Favor ) -> AnyPublisher<LoginModel, Error> {
         let endPoint = Endpoint.userUpdateFavor
         let params = [
@@ -89,28 +114,47 @@ final class FavorManager: FavorManagerProtocol {
         ]
         return networkManager.request(type: LoginModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
     }
-    
     func getFavor(params: FavorRequest) -> AnyPublisher<FavorModel, Error> {
         let endPoint = Endpoint.getFavor(request: params)
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
+    }
+    func getCustomFavor(params: FavorRequest) -> AnyPublisher<FavorModel, Error> {
+        let endPoint = Endpoint.getCustomFavor()
         return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
     }
     func getFavorById(id: String) -> AnyPublisher<LoginModel, Error> {
         let endPoint = Endpoint.getFavorById(Id: id)
         return networkManager.request(type: LoginModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
     }
-    
     func getService() -> AnyPublisher<ServiceModel, Error> {
         let endPoint = Endpoint.getService
         return networkManager.request(type: ServiceModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
+    }
+    
+    
+    func bookingCustomFavor(favor_id: Int, total_price: String, details: String) -> AnyPublisher<FavorModel, Error> {
+        let endPoint = Endpoint.customFavorBookingOffer
+        let params = [
+            "favor_id": String(favor_id),
+            "total_price": total_price,
+            "details": details
+        ]
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .POST, headers: endPoint.headers, parameters: params)
+    }
+    
+    func getCustomSellerFavor() -> AnyPublisher<FavorModel, Error> {
+        let endPoint = Endpoint.customFavors
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
+
+    }
+    func getCustomSellerFavorDetail(id: String) -> AnyPublisher<FavorModel, Error> {
+        let endPoint = Endpoint.customFavorsDetails(id: id)
+        return networkManager.request(type: FavorModel.self, url: endPoint.url, httpMethod: .GET, headers: endPoint.headers, parameters: nil)
 
     }
 
 
-    
-    
 }
-
-
 struct Favor {
     let title: String?
     let tags: String?
@@ -127,7 +171,6 @@ struct Favor {
     let favor_id: String?
     let icon: String?
 }
-
 struct BookingFavor {
     let total_price: String
     let favor_date: String
@@ -137,5 +180,4 @@ struct BookingFavor {
     let lng: String
     let address: String
     let favor_id: String
-    
 }

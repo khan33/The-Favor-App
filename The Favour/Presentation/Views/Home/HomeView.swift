@@ -105,7 +105,7 @@ struct HomeView: View {
         })
         .fullScreenCover(isPresented: $favorDetail, content: {
             if let detail = viewModel.favor_detail {
-                FavorDetailView(isPresented: $favorDetail, favor_detail: detail, isBooking: false)
+                FavorDetailView(isPresented: $favorDetail, favor_detail: detail, isBooking: false, isPage: "Home")
             }
         })
         .sheet(isPresented: $isSheetShown) {
